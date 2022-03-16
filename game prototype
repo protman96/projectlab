@@ -1,0 +1,271 @@
+#include <iostream>
+#include <conio.h>
+#include <windows.h>
+#include <cstdlib>
+#include <fstream>
+#include <stdio.h>
+
+using namespace std;
+
+int menu (); //lvl_loader();
+int engine ();
+
+int main()
+{
+    menu ();
+    engine ();
+    return (0);
+}
+//zarzadzanie menu'sami
+int menu ()
+{
+    //menu functions
+    int main_menu ();   int lvl_menu ();    int lvl_number; //lvl_number przekazuje wartości lvl_menu do silnika gry (umozliwia wybranie poziomu)
+    bool running=true;
+
+    while(running)
+    {
+        system("cls");
+        switch (main_menu())
+        {
+            case 1:
+            {
+                system("cls");
+                switch (lvl_menu())
+                {
+                    case 1:
+                    {                           //funkcja ladujaca poziomy
+                        system("cls");
+                        //cout << "juz grasz";
+                        //engine ();
+                        lvl_number=1;
+                        running=false;
+                        break;
+                    }
+                    case 2:
+                    {
+                        system("cls");
+                        lvl_number=2;
+                        running=false;
+                        break;
+                    }
+                    case 3:
+                    {
+                        system("cls");
+                        lvl_number=3;
+                        running=false;
+                        break;
+                    }
+                    case 0:
+                    {
+                        system("cls");
+                        break;
+                    }
+                }
+                break;
+            }
+            case 0:
+            {
+                exit(0);
+            }
+        }
+
+    }
+
+    return lvl_number;
+}
+//menu glowne
+
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);   //wysylamy strumien danych przez bufor konsoli
+    COORD CursorPosition;                               //ustalamy koordynaty (COORD) na cursor position (koordynaty zawieraj¹ w sobie kolumne i rzad znakow w konsoli): https://cpp0x.pl/dokumentacja/WinAPI/SetConsoleCursorPosition/1212
+    void gotoXY(int,int);                               //wywolujemy funkcje ktora sie tym zajmie, zdeklarowana ponizej
+
+    void gotoXY(int x, int y)                           //funkcja void, nie zwraca zadnej wartosci (w tym wypadku ustala nam jedynie parametry pozycji kursora)
+{
+    CursorPosition.X = x;                               //ustalamy zmienna x ktora odpowiada kolumnie
+    CursorPosition.Y = y;                               //ustalamy zmienna y ktora odpowiada rzêdowi
+    SetConsoleCursorPosition(console,CursorPosition);   //ustawiamy kursor w konsoli na odpowiednie koordynaty i wysy³amy na output
+}
+
+int main_menu ()
+{
+    bool running=true;
+    int x=2, menu_item=0;
+
+    gotoXY(2,0); cout << "NAZWA GRY";
+	gotoXY(0,2); cout << "->";
+	gotoXY(2,2);  cout << "START";
+    gotoXY(2,3);  cout << "QUIT";
+    gotoXY(2,4); cout <<"LOL";
+
+    while(running)                                  //docelowo chce sie pozbyc strzalek i zastapic je mrugajacym tekstem
+    {
+		system("pause>nul");                        // the >nul bit causes it the print no message (taki znak stop dla kursora)
+
+		if(GetAsyncKeyState(VK_DOWN) && x != 4)    //down button pressed
+			{
+				gotoXY(0,x); cout << "  ";         //wymazuje strzalke
+				x++;
+				gotoXY(0,x); cout << "->";         //wpisuje ja na nowo
+				menu_item++;
+				continue;
+			}
+
+		if(GetAsyncKeyState(VK_UP) && x != 2)      //up button pressed
+			{
+				gotoXY(0,x); cout << "  ";
+				x--;
+				gotoXY(0,x); cout << "->";
+				menu_item--;
+				continue;
+			}
+
+        if(GetAsyncKeyState(VK_RETURN))             // Enter key pressed
+        {
+			switch(menu_item)
+			{
+				case 0:
+                {
+                    return 1;
+				}
+                case 1:
+                {
+                    return 0;
+				}
+				case 2:
+                {
+                    gotoXY(20,20); cout<<"LOOOOOOOL";
+                    break;
+                }
+            }
+        }
+    }
+}
+
+//lvl_menu
+int lvl_menu ()
+{
+    bool running=true;
+    int x=2, menu_item=0;
+
+    gotoXY(2,0); cout << "WYBIERZ POZIOM";
+	gotoXY(0,2); cout << "->";
+    gotoXY(2,2);  cout << "POZIOM 1 (HUB)";
+    gotoXY(2,3); cout << "POZIOM 2";
+    gotoXY(2,4); cout << "POZIOM 3";
+    gotoXY(2,5);  cout << "BACK";
+
+    while(running)
+    {
+        system("pause>nul");
+
+		if(GetAsyncKeyState(VK_DOWN) && x != 5)    //down button pressed
+			{
+				gotoXY(0,x); cout << "  ";
+				x++;
+				gotoXY(0,x); cout << "->";
+				menu_item++;
+				continue;
+			}
+
+		if(GetAsyncKeyState(VK_UP) && x != 2)      //up button pressed
+			{
+				gotoXY(0,x); cout << "  ";
+				x--;
+				gotoXY(0,x); cout << "->";
+				menu_item--;
+				continue;
+			}
+
+        if(GetAsyncKeyState(VK_RETURN))             // Enter key pressed
+        {
+			switch(menu_item)
+			{
+				case 0:
+                {
+                    return 1;
+				}
+                case 1:
+                {
+                    return 2;
+				}
+				case 2:
+                {
+                    return 3;
+                }
+                case 3:
+                {
+                    return 0;
+                }
+            }
+        }
+    }
+}
+
+//silnik gry
+int engine ()
+{
+    //game functions
+    void lvl_loader ();   void playable_character ();
+
+    bool running=true;
+
+    while(running)
+    {
+        lvl_loader ();
+        //playable_character ();
+        system("pause>nul");
+    }
+}
+
+//wgrywanie poziomów z txt
+void lvl_loader ()
+{
+    FILE* plik; //uchwyt do pliku
+
+
+    switch(menu())
+    {
+        case 1:
+        {
+            plik = fopen("lvl 1.txt", "r"); //otwieramy plik w trybie tylko do odczytu - parametr "r"
+            break;
+        }
+        case 2:
+        {
+            plik = fopen("lvl 2.txt", "r");
+            break;
+        }
+        case 3:
+        {
+            plik = fopen("lvl 3.txt", "r");
+            break;
+        }
+    }
+
+    char pixel_grid[64][128];
+
+    for (int i=0; i<=63; i++)
+    {
+        for (int j=0; j<=127; j++)
+        {
+            pixel_grid[i][j] = fgetc(plik);                    //zapisuję jeden znak z pliku, w pierwszej kolejności wiersz
+            //cout << pixel_grid[i][j];
+        }
+    }fclose(plik);                                                 //zamykamy plik
+
+
+    char *p_pixel_grid[8192]; int pointer_counter=1;
+
+    for (int i=0; i<=63; i++)
+    {
+        for (int j=0; j<=127; j++)
+        {
+            p_pixel_grid[pointer_counter]=&pixel_grid[i][j];
+            //cout << "wskaznik nr " << pointer_counter << ": " << *p_pixel_grid[pointer_counter] << endl;
+            cout << *p_pixel_grid[pointer_counter];
+            pointer_counter++;
+        }
+    }//delete []p_p_pixel_grid;
+}
+
